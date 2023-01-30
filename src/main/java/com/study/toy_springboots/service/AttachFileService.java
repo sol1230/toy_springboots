@@ -1,19 +1,13 @@
 package com.study.toy_springboots.service;
 
 import com.study.toy_springboots.dao.SurveyMemberDao;
-import com.study.toy_springboots.utils.Paginations;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SurveyMemberService {
+public class AttachFileService {
   @Autowired
   SurveyMemberDao surveyMemberDao;
-
-  @Autowired
-  AttachFileService attachFileService;
 
   // 회원 가입
   public Object insertOne(Object dataMap) {
@@ -73,30 +67,15 @@ public class SurveyMemberService {
 
   // 사진 추가
   public Object insertWithFilesAndGetList(Object dataMap) {
-    Object result = attachFileService.insertMulti(dataMap);
-    result = this.insertOne(dataMap);
+    // insert files
+    Object result = this.insertMulti(dataMap);
     result = this.getList(dataMap);
     return result;
   }
 
-  // pagination
-  public Object getTotal(Object dataMap) {
-    String sqlMapId = "SurveyMember.selectTotal";
-    Object result = surveyMemberDao.getOne(sqlMapId, dataMap);
-    return result;
-  }
-
-  public Object getListWithPagination(Object dataMap) {
-    Map<String, Object> result = new HashMap<String, Object>();
-    int totalCount = (int) this.getTotal(dataMap);
-    int currentPage = (int) ((Map<String, Object>) dataMap).get("currentPage");
-    Paginations paginations = new Paginations(totalCount, currentPage);
-    result.put("paginations", paginations);
-    ((Map<String, Object>) dataMap).put(
-        "pageBegin",
-        paginations.getPageBegin()
-      );
-    result.put("resultList", this.getList(dataMap));
+  public Object insertMulti(Object dataMap) {
+    String sqlMapId = "SurveyMember.insertFile";
+    Object result = surveyMemberDao.getList(sqlMapId, dataMap);
     return result;
   }
 }

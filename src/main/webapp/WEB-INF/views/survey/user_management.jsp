@@ -24,6 +24,8 @@
       <main class="mt-5 p-1">
           <div class="mt-5">
             <div class="fs-3 text-center text-success opacity-75 mb-3">회원관리 페이지</div>
+            <div class="row">
+            <div class="col">
           <form action="/admin/userList">
             <select name="keyField" id="">
               <option value="NAME">이름</option>
@@ -33,6 +35,13 @@
             <input type="text" name="keyWord" id="">
             <button type="submit" class="btn btn-success opacity-75">검색</button>
           </form>
+          </div>
+            <div class="col ">
+          <form action="/member/form" method="get">
+	          <button class="btn btn-success opacity-75 ms-5">Form</button>
+          </form>
+          </div>
+          </div>
             <table class="table text-center mt-3">
               <thead>
                 <tr class="table-success opacity-75">
@@ -45,7 +54,7 @@
                 </tr>
               </thead>
               <tbody class="align-middle">
-            		<c:forEach items="${resultMap}" var="resultData" varStatus="loop">
+            		<c:forEach items="${resultMap.resultList}" var="resultData" varStatus="loop">
                   <tr>
                  <form action="/member/surveyResult" method="get">
                   <th>${resultData.USER_ID}</th>
@@ -73,6 +82,31 @@
               </tbody>
             </table>
           </div>
+
+          <%-- pagination --%>
+          <nav aria-label="Page navigation example">
+          <c:set var="_pagination" value="${resultMap.paginations}" />
+          ${paginations}
+          <span>총 갯수 : ${_pagination.totalCount}</span>
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="${_pagination.previousPage}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+            <%-- for(int i = 0; i > 9 i++){} --%>
+            <c:forEach var="i" begin="${_pagination.blockStart}" end="${_pagination.blockEnd}" >
+              <li class="page-item"><a class="page-link" href="/member/list/${i}">${i}</a></li>
+            </c:forEach>
+              <li class="page-item">
+                <a class="page-link" href="${_pagination.nextPage}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
       </main>
     </div>
     <hr />

@@ -7,6 +7,16 @@
     <select id="selectListByUID" parameterType="Map" resultType="Map">
         SELECT * 
         FROM SURVEYOR
+        <if test="pageScale != null">
+            ORDER BY USER_ID
+            LIMIT #{pageBegin}, #{pageScale}
+        </if>
+    </select>
+
+      <!-- call SurveyMember.selectTotal -->
+    <select id="selectTotal" parameterType="Map" resultType="int">
+        SELECT count(*) as cnt
+        FROM SURVEYOR
     </select>
 
     <!-- 수정할 회원  -->
@@ -39,5 +49,16 @@
         DELETE FROM SURVEYOR
         WHERE USER_ID = #{user_id}
     </delete>
+
+    <!-- 사진 추가 -->
+    <!-- call SurveyMember.insertFile -->
+    <insert id="insertFile" parameterType="Map">
+        INSERT INTO SURVEYOR
+        (USER_ID,NAME,BIRTH_DATE,PASSWORD,PHONE)
+        VALUE(
+           #{USER_ID}, #{NAME}, #{BIRTH_DATE}, #{PASSWORD}, #{PHONE})
+    </insert>
+
+    
 
 </mapper> 
