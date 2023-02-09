@@ -38,6 +38,9 @@ public class MainController {
 
     if (principal instanceof UserDetails) {
       String username = ((UserDetails) principal).getUsername();
+      System.out.println("Username : " + username);
+      System.out.println(((UserDetails) principal).getPassword());
+      System.out.println(((UserDetails) principal).getAuthorities());
     } else {
       String username = principal.toString();
     }
