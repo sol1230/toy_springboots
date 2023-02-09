@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,16 @@ public class SurveyMemberController {
   // 메인 페이지
   @RequestMapping(value = { "/main", "/", "" }, method = RequestMethod.GET) // localhost:8080/member/list
   public ModelAndView main(ModelAndView modelAndView) {
+    Object principal = SecurityContextHolder
+      .getContext()
+      .getAuthentication()
+      .getPrincipal();
+
+    if (principal instanceof UserDetails) {
+      String username = ((UserDetails) principal).getUsername();
+    } else {
+      String username = principal.toString();
+    }
     modelAndView.setViewName("survey/a_main");
     return modelAndView;
   }
